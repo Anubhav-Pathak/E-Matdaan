@@ -1,0 +1,56 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Candidate {
+  id            Int         @id @default(autoincrement())
+  name          String
+  email         String      @unique
+  contact       String
+  areaCode      String
+  votes         Int         @default(0)
+  votesReceived Vote[]
+  election      Election[]  @relation("ElectionCandidates")
+}
+
+model Voter {
+  id          Int         @id @default(autoincrement())
+  name        String      @unique
+  email       String      @unique
+  contact     String
+  areaCode    String
+  voted       Boolean     @default(false)  
+  profile     String      @default("/images/default.jpg")
+  voteCasted  Vote[]
+  election    Election[]  @relation("ElectionVoters")
+}
+
+model Election {
+  id          Int         @id @default(autoincrement())
+  name        String
+  date        DateTime
+  candidates  Candidate[] @relation("ElectionCandidates")
+  voters      Voter[]     @relation("ElectionVoters")
+  votes       Vote[]      
+}
+
+model Vote {
+  id          Int       @id @default(autoincrement())
+  candidate   Candidate @relation(fields: [candidateID], references: [id])
+  candidateID Int
+  voter       Voter     @relation(fields: [voterID], references: [id])
+  voterID     Int       
+  election    Election  @relation(fields: [electionID], references: [id])
+  electionID  Int
+}

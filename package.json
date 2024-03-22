@@ -1,0 +1,30 @@
+{
+  "name": "e-voting",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "@prisma/client": "^5.10.2",
+    "aws-sdk": "^2.1575.0",
+    "daisyui": "^4.7.2",
+    "next": "14.1.3",
+    "react": "^18",
+    "react-dom": "^18",
+    "react-webcam": "^7.2.0",
+    "zustand": "^4.5.2"
+  },
+  "devDependencies": {
+    "@types/react": "^18.2.64",
+    "autoprefixer": "^10.0.1",
+    "eslint": "^8",
+    "eslint-config-next": "14.1.3",
+    "postcss": "^8",
+    "prisma": "^5.10.2",
+    "tailwindcss": "^3.3.0"
+  }
+}
