@@ -20,10 +20,7 @@ export const POST = async (req) => {
         const matched = await compareImages(voterImage, userImage);
 
         if (matched){
-            // Session creations
-            req.session.set('user', voter);
-            await req.session.save();
-            return NextResponse.json({message: "Success"}, {status: 200});
+            return NextResponse.json({message: voter}, {status: 200});
         }
         else {
             return NextResponse.json({message: "Invalid user"}, {status: 401});

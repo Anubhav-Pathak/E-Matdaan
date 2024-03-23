@@ -39,14 +39,15 @@ model Voter {
 model Election {
   id          Int         @id @default(autoincrement())
   name        String
-  date        DateTime
+  startdate   DateTime
+  enddate     DateTime
   candidates  Candidate[] @relation("ElectionCandidates")
   voters      Voter[]     @relation("ElectionVoters")
   votes       Vote[]      
 }
 
 model Vote {
-  id          Int       @id @default(autoincrement())
+  id          String    @id
   candidate   Candidate @relation(fields: [candidateID], references: [id])
   candidateID Int
   voter       Voter     @relation(fields: [voterID], references: [id])

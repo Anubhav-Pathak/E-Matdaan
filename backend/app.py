@@ -37,7 +37,6 @@ def compare():
     embedding_user = img_to_encoding(userImage, model)
 
     dist = np.linalg.norm(embedding_voter - embedding_user)
-    print(dist)
     if dist > 0.7:
         return jsonify({'matched': False}), 401
     else:

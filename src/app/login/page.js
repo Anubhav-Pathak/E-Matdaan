@@ -5,6 +5,8 @@ import React, {useRef, useState} from 'react'
 import useLoadingStore from '@/store/LoadingStore';
 import WebCam from '@/components/Webcam'
 import Input from '@/components/ui/Input'
+import useUserStore from '@/store/UserStore';
+import { useRouter } from 'next/navigation';
 
 const Page = () => {
 
@@ -12,11 +14,21 @@ const Page = () => {
   const [error, setError] = useState('');
   const emailRef = useRef(null);
   const {loadingStates, setLoadingState} = useLoadingStore();
+  const {setUser} = useUserStore();
+  const router = useRouter();
 
   const submithandler = async (e) => {
     setLoadingState('login', true);
     e.preventDefault();
+
     const email = emailRef.current.value;
+
+    if (!email) {
+      setError('Email is required');
+      setLoadingState('login', false);
+      return;
+    }
+
     const voterImage = imageSrc;
 
     const formData = new FormData();
@@ -27,14 +39,19 @@ const Page = () => {
       method: 'POST',
       body: formData
     });
-    const data = await response.json();
-    if (!response.ok) setError(data.message);     
+    const {message} = await response.json();
+    if (!response.ok) {
+      setError(message); 
+    } else {
+      await setUser(message);
+      router.push(`/dashboard/voter/${message.id}`);
+    }    
     setLoadingState('login', false);
   }
   
   return (
-    <div className="hero min-h-screen bg-base-200">
-        <form className="p-4 grid gap-4 border rounded-lg text-center" onSubmit={submithandler}>
+    <div className="hero min-h-screen bg-neutral">
+        <form className="p-4 grid gap-4 shadow-2xl rounded-lg text-center" onSubmit={submithandler}>
             <h1 className='card-title'>Login</h1>
             {error && <p className="text-error">{error}</p>}
             <Input ref={emailRef} type="email" name="email" placeholder="Email" label="Email" />

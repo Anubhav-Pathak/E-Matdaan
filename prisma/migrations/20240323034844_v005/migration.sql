@@ -1,0 +1,3 @@
+-- AlterTable
+ALTER TABLE "Vote" ALTER COLUMN "id" DROP DEFAULT;
+DROP SEQUENCE "Vote_id_seq";

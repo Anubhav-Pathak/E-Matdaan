@@ -7,7 +7,7 @@ const AdminNavbar = () => {
             <div className="flex-1"> <a className="btn btn-ghost text-xl">E-Matdaan</a> </div>
             <div className="flex-none gap-2">
                 <ul className="menu menu-horizontal px-1">
-                    <li><Link href="/admin/elections">Elections</Link></li>
+                    <li><button onClick={()=>document.getElementById('election-modal').showModal()}>Elections</button></li>
                     <li>
                         <details>
                             <summary>Register</summary>
