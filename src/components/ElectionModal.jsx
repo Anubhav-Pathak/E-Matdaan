@@ -1,55 +1,34 @@
-import React from 'react'
+"use client";
 
-import Modal from './ui/Modal'
-import Input from './ui/Input'
+import { addElection } from '@/utils/actions';
 
-import useToastStore from '@/store/ToastStore'
-import useLoadingStore from '@/store/LoadingStore'
+import Modal from './ui/Modal';
+import Input from './ui/Input';
+import Form from './ui/Form';
 
 const ElectionModal = () => {
-
-    const nameRef = React.useRef(null);
-    const startDateRef = React.useRef(null);
-    const endDateRef = React.useRef(null);
-
-    const {loadingStates ,setLoadingState} = useLoadingStore();
-    const {addToast} = useToastStore();
-
-    const submitHandler = async (e) => {
-        e.preventDefault();
-        setLoadingState('elections-register', true);
-        const name = nameRef.current.value;
-        const startDate = startDateRef.current.value;
-        const endDate = endDateRef.current.value;
-        const response = await fetch('/api/register/elections', { 
-            method: 'POST', 
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({name, startDate, endDate}) 
-        });
-        const {message} = await response.json();
-        if (!response.ok) {
-            addToast({message, type: 'error'});
-            return;
-        }
-        addToast({message, type: 'success'});
-        setLoadingState('elections-register', false);
-    }
-
   return (
     <Modal id='election-modal'>
-        <form onSubmit={submitHandler} className='grid grid-cols-2 gap-4'>
-            <p className='text-info col-span-full'>Election Name must be unique</p>
-            <Input ref={nameRef} type='text' label='Election Name' styles="col-span-full" />
-            <div>
-                <p className='text-sm mb-2'>Start Date</p>
-                <Input ref={startDateRef} type='date' label='Election Start Date' />
-            </div>
-            <div>
-                <p className='text-sm mb-2'>End Date</p>
-                <Input ref={endDateRef} type='date' label='Election Start Date' />
-            </div>
-            <button type='submit' className='btn btn-primary col-span-full'>{loadingStates['elections-register'] ? <span className="loading loading-spinner loading-md"></span> : "Add Elections"}</button>
-        </form>
+      <Form 
+        action={addElection} 
+        initialState={{error: null}} 
+        style='grid grid-cols-2 gap-4' 
+        button={{
+          text: "Add Elections",
+          style: "btn btn-primary col-span-full"
+        }}
+      >
+        <p className='text-info col-span-full'>Election Name must be unique</p>
+        <Input type='text' name="name" label='Election Name' styles="col-span-full" />
+        <div>
+          <p className='text-sm mb-2'>Start Date</p>
+          <Input type='date' name="start_date" label='Election Start Date' />
+        </div>
+        <div>
+          <p className='text-sm mb-2'>End Date</p>
+          <Input type='date' name="end_date" label='Election Start Date' />
+        </div>
+      </Form>
     </Modal>
   )
 }

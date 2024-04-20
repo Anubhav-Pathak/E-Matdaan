@@ -21,8 +21,8 @@ def compare():
     voterImage = request.form['voterImage']
     userImage = request.form['userImage']
 
-    voterImage = Image.open(io.BytesIO(base64.b64decode(voterImage.split(",")[1]))).convert('RGB')
-    userImage = Image.open(io.BytesIO(base64.b64decode(userImage))).convert('RGB')
+    voterImage = Image.open(io.BytesIO(base64.b64decode(voterImage))).convert('RGB')
+    userImage = Image.open(io.BytesIO(base64.b64decode(userImage.split(",")[1]))).convert('RGB')
 
     voterImage = cv2.cvtColor(np.array(voterImage), cv2.COLOR_RGB2BGR)
     userImage = cv2.cvtColor(np.array(userImage), cv2.COLOR_RGB2BGR)
@@ -37,7 +37,8 @@ def compare():
     embedding_user = img_to_encoding(userImage, model)
 
     dist = np.linalg.norm(embedding_voter - embedding_user)
-    if dist > 0.7:
+
+    if dist > 0.8:
         return jsonify({'matched': False}), 401
     else:
         return jsonify({'matched': True}), 200

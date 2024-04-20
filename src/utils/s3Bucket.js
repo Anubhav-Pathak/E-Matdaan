@@ -13,7 +13,7 @@ export const uploadFile = async (folder, fileName, file) => {
     const params = {
         Bucket: bucketName,
         Key: `${folder}/`+fileName,
-        Body: Buffer.from(await file.arrayBuffer()),
+        Body: Buffer.from(file, 'base64'),
         ContentType: file.type,
     };
     return new Promise((resolve, reject) => {

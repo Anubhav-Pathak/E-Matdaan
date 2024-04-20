@@ -16,10 +16,8 @@ datasource db {
 model Candidate {
   id            Int         @id @default(autoincrement())
   name          String
-  email         String      @unique
-  contact       String
+  passkey       String      @unique @default(cuid())
   areaCode      String
-  votes         Int         @default(0)
   votesReceived Vote[]
   election      Election[]  @relation("ElectionCandidates")
 }
@@ -27,12 +25,11 @@ model Candidate {
 model Voter {
   id          Int         @id @default(autoincrement())
   name        String      @unique
-  email       String      @unique
+  aadhar      String      @unique
   contact     String
-  areaCode    String
-  voted       Boolean     @default(false)  
+  areaCode    String  
   profile     String      @default("/images/default.jpg")
-  voteCasted  Vote[]
+  voteCasted  Vote[]      
   election    Election[]  @relation("ElectionVoters")
 }
 
@@ -41,6 +38,7 @@ model Election {
   name        String
   startdate   DateTime
   enddate     DateTime
+  status      String      @default("upcoming")
   candidates  Candidate[] @relation("ElectionCandidates")
   voters      Voter[]     @relation("ElectionVoters")
   votes       Vote[]      
@@ -48,6 +46,7 @@ model Election {
 
 model Vote {
   id          String    @id
+  timestamp   DateTime  @default(now())
   candidate   Candidate @relation(fields: [candidateID], references: [id])
   candidateID Int
   voter       Voter     @relation(fields: [voterID], references: [id])

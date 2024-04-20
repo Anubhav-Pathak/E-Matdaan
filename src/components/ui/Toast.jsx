@@ -1,3 +1,4 @@
+'use client';
 import React, {useEffect} from 'react'
 import useToastStore from '@/store/ToastStore'
 
@@ -22,7 +23,7 @@ const Toast = () => {
   }, [toasts, removeToast]);
 
   return (
-    <div className="toast">
+    <div className="toast z-50">
       {toasts.map((toast, index) => (
         <div key={index} className={`alert ${colourVariants[toast.type]}`}>
           <span>{toast.message}</span>

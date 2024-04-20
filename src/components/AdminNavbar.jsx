@@ -1,3 +1,5 @@
+"use client"
+
 import Image from 'next/image'
 import Link from 'next/link'
 
@@ -8,15 +10,7 @@ const AdminNavbar = () => {
             <div className="flex-none gap-2">
                 <ul className="menu menu-horizontal px-1">
                     <li><button onClick={()=>document.getElementById('election-modal').showModal()}>Elections</button></li>
-                    <li>
-                        <details>
-                            <summary>Register</summary>
-                            <ul className="p-2 bg-base-100 rounded-t-none">
-                                <li><Link href="/admin/register?user=candidate">Candidate</Link></li>
-                                <li><Link href="/admin/register?user=voter">Voter</Link></li>
-                            </ul>
-                        </details>
-                    </li>
+                    <li><button onClick={()=>document.getElementById('candidate-modal').showModal()}>Candidates</button></li>
                 </ul>
                 <div className="form-control">
                     <input type="text" placeholder="Search" className="input input-bordered w-24 md:w-auto" />
