@@ -1,4 +1,5 @@
 import ElectionCard from "@/components/ElectionCard";
+import Barplot from "@/components/Barplot"
 import { getElections, getStats, getElection, getCandidate, getVoterDetails, getNotVotedElections, getVoterVotes, getVoterCandidates } from "@/utils/db";
 import { DeleteButton, VoteButton } from "@/components/ActionButtons";
 
@@ -55,7 +56,7 @@ export async function Election(id){
                 <li><button className="btn">Startdate<div className="badge">{election.startdate.toLocaleDateString('en-IN')}</div></button></li>
                 <li><button className="btn">Enddate<div className="badge">{election.enddate.toLocaleDateString('en-IN')}</div></button></li>
             </ul>
-            <section className="grid grid-cols-2 gap-4">
+            <section className="grid grid-cols-4 gap-4">
                 <ul className="max-w-96 h-64 overflow-y-scroll">
                     <li><h2 className="text-xl font-bold mb-4">Registered Candidates</h2></li>
                     {election.candidates.map((candidate, index) => <li key={index}> {candidate.name}</li>)}
@@ -64,6 +65,9 @@ export async function Election(id){
                     <li><h2 className="text-xl font-bold mb-4">Registered Voters</h2></li>
                     {election.voters.map((voter, index) => <li key={index}>{voter.name}</li>)}
                 </ul>
+                <aside className="border-2 col-start-3 col-end-5">
+                    <Barplot election={election} />
+                </aside>
                 <div className="overflow-x-auto col-span-full">
                     <h2 className="text-xl font-bold">Votes Casted</h2>
                     <table className="table table-xs table-pin-rows table-pin-cols">
@@ -102,7 +106,7 @@ export async function Candidate(id){
                 </div>
             </header>
             <button className="btn mb-12">Area Code: <div className="badge">{candidate.areaCode}</div></button>
-            <section className="mb-12 grid grid-cols-2">
+            <section className="mb-12 grid grid-cols-2 gap-8">
                 <div>
                     <h2 className="text-4xl font-bold mb-4">Stats</h2>
                     <div className="overflow-x-auto">
@@ -122,7 +126,7 @@ export async function Candidate(id){
                         </table>
                     </div>
                 </div>
-                <div>
+                <div className="">
                     <h2 className="text-4xl font-bold mb-4">Enroll in Elections: </h2>
                     <div className="carousel max-w-xl space-x-4 rounded-box">{
                         unregisteredElection.map((election, index) => 
